@@ -1,16 +1,18 @@
+<!-- Home page is basically just a table of the items, one per line, with an "Add Item" button to add a new item. -->
+
     <div class="container">
         <div class="row col-xs-12 home-button-bar">
-<!--            <button class="button button-primary" ng-click="addNewItem()">Add Item</button>-->
             <button class="button button-primary" ng-click="showItemDetail(null)">Add Item</button>
         </div>
         <div class="row row-content">
             <div class="col-xs-12 col-sm-9">
                 <div ng-if="!showItems">
+                    <!-- Potential "Loading..." message -->
                     <h3>{{message}}</h3>
                 </div>
+                <!-- Main content is a table, with an ng-repeat over the items from the database -->
+                <!-- Sorting by any column is supported. Items can be deleted via a "Delete" button on each line -->
                 <div class="media" ng-if="showItems">
-<!--                    <p><a ui-sref="app.itemdetails({id: '5a37210e94e7945915474d5f'})">Item Detail</a></p>-->
-<!--                    <p><a ui-sref="app.itemdetails">Item Detail</a></p>-->
                     <table class="table table-bordered table-striped mytable-hover">
                         <thead>
                         <tr>
