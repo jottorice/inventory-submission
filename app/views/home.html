@@ -1,0 +1,55 @@
+    <div class="container">
+        <div class="row col-xs-12 home-button-bar">
+<!--            <button class="button button-primary" ng-click="addNewItem()">Add Item</button>-->
+            <button class="button button-primary" ng-click="showItemDetail(null)">Add Item</button>
+        </div>
+        <div class="row row-content">
+            <div class="col-xs-12 col-sm-9">
+                <div ng-if="!showItems">
+                    <h3>{{message}}</h3>
+                </div>
+                <div class="media" ng-if="showItems">
+<!--                    <p><a ui-sref="app.itemdetails({id: '5a37210e94e7945915474d5f'})">Item Detail</a></p>-->
+<!--                    <p><a ui-sref="app.itemdetails">Item Detail</a></p>-->
+                    <table class="table table-bordered table-striped mytable-hover">
+                        <thead>
+                        <tr>
+                          <td>
+                            <a href="#" ng-click="sortType = 'itemRef'; sortReverse = !sortReverse">
+                            Reference
+                            <span ng-show="sortType == 'itemRef' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'itemRef' && sortReverse" class="fa fa-caret-up"></span>
+                          </td>
+                          <td>
+                            <a href="#" ng-click="sortType = 'location'; sortReverse = !sortReverse">
+                            Location
+                            <span ng-show="sortType == 'location' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'location' && sortReverse" class="fa fa-caret-up"></span>
+                          </td>
+                          <td>
+                            <a href="#" ng-click="sortType = 'description'; sortReverse = !sortReverse">
+                            Description
+                            <span ng-show="sortType == 'description' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'description' && sortReverse" class="fa fa-caret-up"></span>
+                          </td>
+                          <td>
+                            <a href="#" ng-click="sortType = 'note'; sortReverse = !sortReverse">
+                            Note
+                            <span ng-show="sortType == 'note' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'note' && sortReverse" class="fa fa-caret-up"></span>
+                          </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="item in items | orderBy:sortType:sortReverse" ng-click="showItemDetail(item._id)">
+                          <td>{{ item._id }}</td>
+                          <td>{{ item.location }}</td>
+                          <td>{{ item.description }}</td>
+                          <td>{{ item.note }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
