@@ -1,59 +1,76 @@
+<!--
+Page to show item details. This is used in three modes, depending on control variables
+"newItem" and "allowEdit":
+  * Display an editable form for entering a new item's details.
+  * Display a non-editable form to display an item's details after the user has clicked on
+    an item line in the home page.
+  * Display am editable form if the user is displaying an existing item, and clicks on the
+    "Edit" button.
 
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-               <h3 ng-show="newItem">New Item</h3>
-               <h3 ng-show="!newItem">Item Details</h3>
-               <hr>
-            </div>
+It's debatable whether the "New Item" mode would have been better implemented as a separate state and
+HTML page. For now, this seemed to offer good code reuse.
+-->
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+           <!-- Display different title, depending on current mode -->
+           <h3 ng-show="newItem">New Item</h3>
+           <h3 ng-show="!newItem">Item Details</h3>
+           <hr>
         </div>
-        <div class="row row-content">
-            <div class="col-xs-12" ng-if="!showItem">
-                <h3>{{message}}</h3>
-            </div>
-            <div class="col-xs-12 col-sm-9">
-                <form class="form-horizontal" role="form" name="itemForm" ng-submit="saveItemForm()" novalidate>
-                    <div class="form-group">
-                        <label for="itemref" class="col-sm-2 control-label">Item Ref</label>
-                        <div class="col-sm-10">
-                        <input type="text" class="form-control" id="itemref" name="itemref" placeholder="Enter unique ID string (e.g., MacBook79)"
-                        ng-model="item.itemRef" required ng-disabled="!allowEdit">
-                          <span ng-show="itemForm.itemref.$error.required && !itemForm.itemref.$pristine" class="help-block">A reference string is required.</span>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="description" class="col-sm-2 control-label">Description</label>
-                        <div class="col-sm-10">
-                        <input type="text" class="form-control" id="description" name="description" placeholder="Description of item"
-                        ng-model="item.description" ng-disabled="!allowEdit">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="location" class="col-sm-2 control-label">Location</label>
-                        <div class="col-sm-10">
-                        <input type="text" class="form-control" id="location" name="location" placeholder="Location of item"
-                        ng-model="item.location" ng-disabled="!allowEdit">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="note" class="col-sm-2 control-label">Note</label>
-                        <div class="col-sm-10">
-                        <input type="text" class="form-control" id="note" name="note" placeholder="Note for item"
-                        ng-model="item.note" ng-disabled="!allowEdit">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button type="button" class="btn btn-primary" ng-click="editItem()" ng-disabled="itemForm.$invalid" ng-show="!allowEdit">Edit</button>
-                            <button type="button" class="btn btn-primary" ui-sref="app" ng-show="!allowEdit">Close</button>
-                            
-                            <button type="submit" class="btn btn-primary" ng-click="saveItem()" ng-disabled="itemForm.$invalid || itemForm.$pristine" ng-show="allowEdit">Save</button>
-                            <button type="button" class="btn btn-primary" ui-sref="app" ng-show="allowEdit">Cancel</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+    </div>
+    <div class="row row-content">
+        <div class="col-xs-12" ng-if="!showItem">
+            <!-- Potential "Loading..." message -->
+            <h3>{{message}}</h3>
+        </div>
+        <!-- Main content is a form, with item details "Item Ref", "Description", "Location" and "Note". Only "Item Ref" is required. -->
+        <div class="col-xs-12 col-sm-9">
+            <form class="form-horizontal" role="form" name="itemForm" ng-submit="saveItemForm()" novalidate>
+                <div class="form-group">
+                    <label for="itemref" class="col-sm-2 control-label">Item Ref</label>
+                    <div class="col-sm-10">
+                    <input type="text" class="form-control" id="itemref" name="itemref" placeholder="Enter unique ID string (e.g., MacBook79)"
+                    ng-model="item.itemRef" required ng-disabled="!allowEdit">
+                      <span ng-show="itemForm.itemref.$error.required && !itemForm.itemref.$pristine" class="help-block">A reference string is required.</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                    <label for="description" class="col-sm-2 control-label">Description</label>
+                    <div class="col-sm-10">
+                    <input type="text" class="form-control" id="description" name="description" placeholder="Description of item"
+                    ng-model="item.description" ng-disabled="!allowEdit">
+                  </div>
+                </div>
+                <div class="form-group">
+                    <label for="location" class="col-sm-2 control-label">Location</label>
+                    <div class="col-sm-10">
+                    <input type="text" class="form-control" id="location" name="location" placeholder="Location of item"
+                    ng-model="item.location" ng-disabled="!allowEdit">
+                  </div>
+                </div>
+                <div class="form-group">
+                    <label for="note" class="col-sm-2 control-label">Note</label>
+                    <div class="col-sm-10">
+                    <input type="text" class="form-control" id="note" name="note" placeholder="Note for item"
+                    ng-model="item.note" ng-disabled="!allowEdit">
+                  </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <!-- Display Edit/Close buttons if this is an existing item, and not being edited yet -->
+                        <button type="button" class="btn btn-primary" ng-click="editItem()" ng-show="!allowEdit">Edit</button>
+                        <button type="button" class="btn btn-primary" ui-sref="app" ng-show="!allowEdit">Close</button>
 
+                        <!-- Display Save/Cancel buttons if this is a new item, or an existing item which we are editing -->
+                        <!-- Disable the Save button if the "Item Ref" field has not been set -->
+                        <button type="submit" class="btn btn-primary" ng-click="saveItem()" ng-disabled="itemForm.$invalid || itemForm.$pristine" ng-show="allowEdit">Save</button>
+                        <button type="button" class="btn btn-primary" ui-sref="app" ng-show="allowEdit">Cancel</button>
+                    </div>
+                </div>
+            </form>
         </div>
 
     </div>
+
+</div>
