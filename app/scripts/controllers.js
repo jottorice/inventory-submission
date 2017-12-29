@@ -144,7 +144,7 @@ angular.module('inventoryApp')
     $scope.showPromotion = false;
     $scope.message = "Loading ...";
     
-    $scope.sortType     = 'location'; // set the default sort type
+    $scope.sortType     = 'itemRef'; // set the default sort type
     $scope.sortReverse  = false;  // set the default sort order
     $scope.searchFilter   = 'Where';     // set the default search/filter term
 
