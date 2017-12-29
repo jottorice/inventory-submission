@@ -16,7 +16,6 @@ db.once('open', function () {
 });
 
 var index = require('./routes/index');
-var users = require('./routes/users');
 var items = require('./routes/itemRouter');
 
 var app = express();
@@ -51,7 +50,6 @@ app.options('*', function(req, res) {
 });
 
 app.use('/', index);
-app.use('/users', users);
 app.use('/items', items);
 
 // catch 404 and forward to error handler
