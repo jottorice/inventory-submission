@@ -32,7 +32,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 //app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'app')));
 //app.use(express.static(__dirname));
 
 app.all('*', function(req, res, next) {
@@ -73,5 +72,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+app.use(express.static(path.join(__dirname, 'app')));
 
 module.exports = app;
