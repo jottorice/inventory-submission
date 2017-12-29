@@ -50,7 +50,7 @@ app.options('*', function(req, res) {
     res.send(200);
 });
 
-app.use('/', index);
+//app.use('/', index);
 app.use('/users', users);
 app.use('/items', items);
 
