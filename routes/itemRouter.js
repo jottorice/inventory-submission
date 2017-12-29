@@ -1,4 +1,4 @@
-console.log('Loaded itemRouter');
+// Main router
 
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -9,8 +9,7 @@ var Items = require('../models/items');
 var itemRouter = express.Router();
 itemRouter.use(bodyParser.json());
 
-//var Verify = require('./verify');
-
+// Route /items
 itemRouter.route('/')
 .all(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -18,6 +17,8 @@ itemRouter.route('/')
   next();
  })
 
+// GET /items
+// Get all items as a JSON list of dictionaries
 .get(function (req, res, next) {
     console.log('In .get');
     Items.find(req.query)
@@ -27,6 +28,8 @@ itemRouter.route('/')
     });
 })
 
+// POST /items
+// Create a new item
 .post(function (req, res, next) {
     console.log('In .post');
     Items.create(req.body, function (err, item) {
@@ -44,13 +47,17 @@ itemRouter.route('/')
     });
 })
 
-.delete(/*Verify.verifyOrdinaryUser, Verify.verifyAdmin,*/ function (req, res, next) {
+// DELETE /items
+// Delete all items
+.delete(function (req, res, next) {
     Items.remove({}, function (err, resp) {
         if (err) throw err;
         res.json(resp);
     });
 });
 
+
+// Route /items/:itemid
 itemRouter.route('/:itemId')
 .all(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -58,7 +65,9 @@ itemRouter.route('/:itemId')
   next();
  })
 
-.get(/*Verify.verifyOrdinaryUser,*/ function (req, res, next) {
+// GET /items/:itemid
+// Return a single item, referenced by id
+.get(function (req, res, next) {
     Items.findById(req.params.itemId)
         .populate('comments.postedBy')
         .exec(function (err, item) {
@@ -67,7 +76,9 @@ itemRouter.route('/:itemId')
     });
 })
 
-.put(/*Verify.verifyOrdinaryUser, Verify.verifyAdmin,*/ function (req, res, next) {
+// PUT /items/:itemid
+// Update a single item, referenced by id
+.put(function (req, res, next) {
     Items.findByIdAndUpdate(req.params.itemId, {
         $set: req.body
     }, {
@@ -78,96 +89,13 @@ itemRouter.route('/:itemId')
     });
 })
 
-.delete(/*Verify.verifyOrdinaryUser, Verify.verifyAdmin,*/ function (req, res, next) {
+// DELETE /items/:itemid
+// Delete a single item, referenced by id
+.delete(function (req, res, next) {
         Items.findByIdAndRemove(req.params.itemId, function (err, resp) {
         if (err) throw err;
         res.json(resp);
     });
 });
-
-//itemRouter.route('/:itemId/comments')
-////.all(Verify.verifyOrdinaryUser)
-//
-//.get(function (req, res, next) {
-//    Items.findById(req.params.itemId)
-////        .populate('comments.postedBy')
-//        .exec(function (err, item) {
-//        if (err) throw err;
-//        res.json(item.comments);
-//    });
-//})
-//
-//.post(function (req, res, next) {
-//    Items.findById(req.params.itemId, function (err, item) {
-//        if (err) throw err;
-//        req.body.postedBy = req.decoded._doc._id;
-////        item.comments.push(req.body);
-//        item.save(function (err, item) {
-//            if (err) throw err;
-//            console.log('Updated Comments!');
-//            res.json(item);
-//        });
-//    });
-//})
-//
-//.delete(Verify.verifyAdmin, function (req, res, next) {
-//    Items.findById(req.params.itemId, function (err, item) {
-//        if (err) throw err;
-//        for (var i = (item.comments.length - 1); i >= 0; i--) {
-//            item.comments.id(item.comments[i]._id).remove();
-//        }
-//        item.save(function (err, result) {
-//            if (err) throw err;
-//            res.writeHead(200, {
-//                'Content-Type': 'text/plain'
-//            });
-//            res.end('Deleted all comments!');
-//        });
-//    });
-//});
-//
-//itemRouter.route('/:itemId/comments/:commentId')
-//.all(Verify.verifyOrdinaryUser)
-//
-//.get(function (req, res, next) {
-//    Items.findById(req.params.itemId)
-//        .populate('comments.postedBy')
-//        .exec(function (err, item) {
-//        if (err) throw err;
-//        res.json(item.comments.id(req.params.commentId));
-//    });
-//})
-//
-//.put(function (req, res, next) {
-//    // We delete the existing commment and insert the updated
-//    // comment as a new comment
-//    Items.findById(req.params.itemId, function (err, item) {
-//        if (err) throw err;
-//        item.comments.id(req.params.commentId).remove();
-//                req.body.postedBy = req.decoded._doc._id;
-//        item.comments.push(req.body);
-//        item.save(function (err, item) {
-//            if (err) throw err;
-//            console.log('Updated Comments!');
-//            res.json(item);
-//        });
-//    });
-//})
-//
-//.delete(function (req, res, next) {
-//    Items.findById(req.params.itemId, function (err, item) {
-//        if (item.comments.id(req.params.commentId).postedBy
-//           != req.decoded._doc._id) {
-//            var err = new Error('You are not authorized to perform this operation!');
-//            err.status = 403;
-//            return next(err);
-//        }
-//        item.comments.id(req.params.commentId).remove();
-//        item.save(function (err, resp) {
-//            if (err) throw err;
-//            res.json(resp);
-//        });
-//    });
-//});
 
 module.exports = itemRouter;
