@@ -32,7 +32,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'app')));
+//app.use(express.static(path.join(__dirname, 'app')));
 
 app.all('*', function(req, res, next) {
     // add details of what is allowed in HTTP request headers to the response headers
