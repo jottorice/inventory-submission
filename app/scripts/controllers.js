@@ -241,17 +241,16 @@ angular.module('inventoryApp')
         var myRef = $scope.item.itemRef;
         console.log(myRef);
         if ($scope.newItem) {
-            itemFactory.save($scope.item);
+            itemFactory.save($scope.item)
+                .$promise.then(
+                    function(response) {$state.go("app", {reload: true})}
+                )
         } else {
-            itemFactory.update({id:myID}, $scope.item);
+            itemFactory.update({id:myID}, $scope.item)
+                .$promise.then(
+                    function(response) {$state.go("app", {reload: true})}
+                )
         }
-        $state.go("app", {reload: true});
-//            .promise.then(
-//                function (response) {
-//                    console.log("saveItem response:")
-//                    console.log(response);
-//                }
-//            )
     }
     
 }])
