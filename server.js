@@ -1,3 +1,7 @@
+// server.js
+// Server top-level script - run to start the server.
+// This is derived from the "app.js" code of the conFusion project.
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -7,6 +11,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./config');
 
+// Connect to the MongoDB database on mlab.com
 mongoose.connect(config.mongoUrl);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -30,9 +35,13 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'app')));
-//app.use(express.static(__dirname));
 
+// Serve the Angular app from the top-level "app" directory.
+app.use(express.static(path.join(__dirname, 'app')));
+
+// Defeat cross-origin safeguards, for development. _Possibly_ I can remove this, now that
+// both Angular app and server are hosted together on Heroku? I'm not sure. I guess if I did
+// remove this, it would lock the Ionic app out, then. So it stays for now.
 app.all('*', function(req, res, next) {
     // add details of what is allowed in HTTP request headers to the response headers
     res.header('Access-Control-Allow-Origin', req.headers.origin);
@@ -44,11 +53,12 @@ app.all('*', function(req, res, next) {
     next();
 });
 
-// fulfils pre-flight/promise request
+// Fulfils pre-flight/promise request - for allowing cross-origin POSTs to work
 app.options('*', function(req, res) {
     res.send(200);
 });
 
+// Routes
 app.use('/', index);
 app.use('/items', items);
 
