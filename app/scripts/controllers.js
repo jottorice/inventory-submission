@@ -172,6 +172,16 @@ angular.module('inventoryApp')
         $state.go('app.itemdetails', {id: null});
     }
 
+    $scope.deleteItem = function(itemid) {
+        console.log("Will delete item", itemid);
+        itemFactory.delete({id:itemid})
+          .$promise.then (
+            function (response) {
+                $state.go($state.current, {}, {reload: true})
+            }
+          )
+    }
+
 }])
 
 .controller('ItemDetailController', ['$scope', '$state', '$stateParams', 'itemFactory', function ($scope, $state, $stateParams, itemFactory) {
@@ -224,12 +234,18 @@ angular.module('inventoryApp')
         console.log("In ItemDetailController:saveItem");
         console.log("$scope.item:");
         console.log($scope.item);
+        console.log("Item id:");
+        var myID = $scope.item._id;
+        console.log(myID);
+        console.log("Item Ref:");
+        var myRef = $scope.item.itemRef;
+        console.log(myRef);
         if ($scope.newItem) {
             itemFactory.save($scope.item);
         } else {
-            itemFactory.update($scope.item);
+            itemFactory.update({id:myID}, $scope.item);
         }
-        $state.go("app");
+        $state.go("app", {reload: true});
 //            .promise.then(
 //                function (response) {
 //                    console.log("saveItem response:")
