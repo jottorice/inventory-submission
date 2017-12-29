@@ -50,10 +50,10 @@
             <div class="col-xs-12 col-sm-9">
                 <form class="form-horizontal" role="form" name="itemForm" ng-submit="saveItemForm()" novalidate>
                     <div class="form-group">
-                        <label for="itemref" class="col-sm-2 control-label">Item Reference Code</label>
+                        <label for="itemref" class="col-sm-2 control-label">Item Ref</label>
                         <div class="col-sm-10">
-                        <input type="text" class="form-control" id="itemref" name="itemref" placeholder="Enter Unique ID string (e.g., MacBook79)"
-                        ng-model="item.itemRef" required>
+                        <input type="text" class="form-control" id="itemref" name="itemref" placeholder="Enter unique ID string (e.g., MacBook79)"
+                        ng-model="item.itemRef" required ng-disabled="!allowEdit">
                           <span ng-show="itemForm.itemref.$error.required && !itemForm.itemref.$pristine" class="help-block">A reference string is required.</span>
                       </div>
                     </div>
@@ -61,7 +61,7 @@
                         <label for="description" class="col-sm-2 control-label">Description</label>
                         <div class="col-sm-10">
                         <input type="text" class="form-control" id="description" name="description" placeholder="Description of item"
-                        ng-model="item.description" required>
+                        ng-model="item.description" ng-disabled="!allowEdit">
 <!--                          <span ng-show="itemForm.description.$error.required && !itemForm.description.$pristine" class="help-block">A description string is required.</span>-->
                       </div>
                     </div>
@@ -69,7 +69,7 @@
                         <label for="location" class="col-sm-2 control-label">Location</label>
                         <div class="col-sm-10">
                         <input type="text" class="form-control" id="location" name="location" placeholder="Location of item"
-                        ng-model="item.location" required>
+                        ng-model="item.location" ng-disabled="!allowEdit">
 <!--                          <span ng-show="itemForm.location.$error.required && !itemForm.location.$pristine" class="help-block">A location string is required.</span>-->
                       </div>
                     </div>
@@ -77,18 +77,18 @@
                         <label for="note" class="col-sm-2 control-label">Note</label>
                         <div class="col-sm-10">
                         <input type="text" class="form-control" id="note" name="note" placeholder="Note for item"
-                        ng-model="item.note" required>
+                        ng-model="item.note" ng-disabled="!allowEdit">
 <!--                          <span ng-show="itemForm.note.$error.required && !itemForm.note.$pristine" class="help-block">A note string is required.</span>-->
                       </div>
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
 <!--                            <button type="submit" class="btn btn-primary" ng-disabled="itemForm.$invalid || !$scope.isEditable">Save Item</button>-->
-                            <button type="submit" class="btn btn-primary" ng-click="saveItem()">Save Item</button>
-                        </div>
-                        <div class="col-sm-offset-2 col-sm-10">
-<!--                            <button type="submit" class="btn btn-primary" ng-disabled="itemForm.$invalid || !$scope.isEditable">Save Item</button>-->
-                            <button type="button" class="btn btn-primary" ui-sref="app">Cancel</button>
+                            <button type="button" class="btn btn-primary" ng-click="editItem()" ng-disabled="itemForm.$invalid" ng-show="!allowEdit">Edit</button>
+                            <button type="button" class="btn btn-primary" ui-sref="app" ng-show="!allowEdit">Close</button>
+                            
+                            <button type="submit" class="btn btn-primary" ng-click="saveItem()" ng-disabled="itemForm.$invalid || itemForm.$pristine" ng-show="allowEdit">Save</button>
+                            <button type="button" class="btn btn-primary" ui-sref="app" ng-show="allowEdit">Cancel</button>
                         </div>
                     </div>
                 </form>

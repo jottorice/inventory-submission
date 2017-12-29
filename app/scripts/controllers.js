@@ -186,6 +186,9 @@ angular.module('inventoryApp')
     console.log("In ItemDetailController");
     console.log($stateParams);
     
+    // If "id" is null, then this is a new item. Otherwise, we get the item data from
+    // the database. The "newItem" value is used by the view to control whether we deal
+    // with an existing item, or a new one.
     if ($stateParams.id) {
         $scope.newItem = false;
         $scope.message = "Loading ...";
@@ -199,6 +202,7 @@ angular.module('inventoryApp')
                 console.log("Got item from DB:");
                 console.log($scope.item);
                 $scope.showItem = true;
+                $scope.allowEdit = false;
             },
             function (response) {
                 $scope.message = "Error: " + response.status + " " + response.statusText;
@@ -207,13 +211,24 @@ angular.module('inventoryApp')
     } else {
         $scope.showItem = true;
         $scope.newItem = true;
+        $scope.allowEdit = true;
     }
 
+    $scope.editItem = function () {
+        console.log("In ItemDetailController:editItem");
+        console.log("Setting allowEdit to true");
+        $scope.allowEdit = true;
+    }
+    
     $scope.saveItem = function () {
         console.log("In ItemDetailController:saveItem");
         console.log("$scope.item:");
         console.log($scope.item);
-        itemFactory.save($scope.item);
+        if ($scope.newItem) {
+            itemFactory.save($scope.item);
+        } else {
+            itemFactory.update($scope.item);
+        }
         $state.go("app");
 //            .promise.then(
 //                function (response) {
