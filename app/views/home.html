@@ -45,8 +45,8 @@
                         <tbody>
                         <tr ng-repeat="item in items | orderBy:sortType:sortReverse">
                           <td ng-click="showItemDetail(item._id)">{{ item.itemRef }}</td>
-                          <td ng-click="showItemDetail(item._id)">{{ item.location }}</td>
                           <td ng-click="showItemDetail(item._id)">{{ item.description }}</td>
+                          <td ng-click="showItemDetail(item._id)">{{ item.location }}</td>
                           <td ng-click="showItemDetail(item._id)">{{ item.note }}</td>
                           <td><button type="button" ng-click="deleteItem(item._id)">Delete</button></td>
                         </tr>
