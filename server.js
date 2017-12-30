@@ -80,6 +80,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.use(express.static(__dirname + '/app/'));
-
 module.exports = app;
