@@ -47,6 +47,11 @@ angular.module('inventoryApp')
           )
     }
 
+    $scope.doRefresh = function () {
+        console.log("In refresh");
+        $state.go($state.current, {}, {reload: true});
+    }
+    
 }])
 
 .controller('ItemDetailController', ['$scope', '$state', '$stateParams', 'itemFactory', function ($scope, $state, $stateParams, itemFactory) {
