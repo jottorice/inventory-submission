@@ -69,7 +69,6 @@ itemRouter.route('/:itemId')
 // Return a single item, referenced by id
 .get(function (req, res, next) {
     Items.findById(req.params.itemId)
-        .populate('comments.postedBy')
         .exec(function (err, item) {
         if (err) throw err;
         res.json(item);
